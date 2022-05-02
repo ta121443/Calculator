@@ -9,7 +9,7 @@ html {
 
 body {
     text-align: center;
-    margin-top: 20px;
+    margin-top: 150px;
 }
 #container {
     display: inline-block;
@@ -44,8 +44,14 @@ button {
     border: solid 1px rgb(88, 88, 88);
     cursor: pointer;
     background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 2px 2px 0 black;
 }
 
 button:active {
     background-color: #e4e4e4;
+    transform: translate(2px, 2px);
+    box-shadow: none;
 }

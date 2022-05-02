@@ -2,27 +2,57 @@ const $button = document.getElementsByTagName('button');
 const buttonLength = $button.length;
 const $result = document.getElementById('result');
 
-let concatText = "";    //出力部
+let beforeText = "";    //演算子の前の数
+let nowText = "";     //演算子の後の数
+let operator = "";      //何の演算子が入力されたのか
+let afterFirstFlag = true;
+let answer = 0;
 
 const buttonPressed = (event) => {
     const text = event.target.textContent;
-    if(concatText.length < 10){
+    if(beforeText.length < 10 && nowText.length < 10){    //画面の幅の都合上
 
-        if(text === "="){   //=が押されたら計算結果を出力
-            concatText = eval(concatText);
-        } else if(text === "C") {
-            concatText = "0";
-        } else if(concatText === "0"){
-            concatText = text;        
-        } else {
-            concatText += text;
+        //%%%%%%%%%%%%%演算子が入力される前%%%%%%%%
+        if(operator.length === 0){      
+
+            if(isNaN(Number(text))) {  //数字以外が入力されたら
+                if(!(text === "=")) {
+                    beforeText = nowText;    //いったん表示を0に
+                    operator = text;
+                }
+            } else {                     //数字が入力されたら追加していく
+                nowText += text;
+            }
+        } else {    //%%%%%%%%演算子が入力された後%%%%%%%%%
+            if(!(isNaN(Number(text)))) {
+                if(afterFirstFlag) {        //最初の数字が入力されるまでは数字を表示したままにしておく
+                    nowText = text;
+                    afterFirstFlag = false;
+                } else {                    //演算子の後の数字入力以降はその数字を表示していく
+                    nowText += text;
+                }
+            }
+            if (text === "=") {
+                if(operator === "+") {
+                    answer = Number(beforeText) + Number(nowText);
+                    nowText = String(answer);
+                } else if(operator === "-") {
+                    answer = Number(beforeText) - Number(nowText);
+                    nowText = String(answer);
+                } else if(operator === "*") {
+                    answer = Number(beforeText) * Number(nowText);
+                    nowText = String(answer);
+                } else if(operator === "/") {
+                    answer = Number(beforeText) / Number(nowText);
+                    nowText = String(answer);
+                }
+            } 
         }
-    $result.textContent = concatText;
     }
-    if(text === "C"){
-        concatText = "0";
+    if(text === "C") {
+        nowText = "";
     }
-    $result.textContent = concatText;
+    $result.textContent = nowText;
 }
 
 let buttonIndex = 0;
